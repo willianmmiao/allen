@@ -233,11 +233,11 @@ let url = {
 //番茄看看key
 function fqkk1(timeout = 0) {
   return new Promise((resolve) => {
-    setTimeout( ()=>{
+/*    setTimeout( ()=>{
       if (typeof $.getdata('fqkkhd') === "undefined") {
         $.msg($.name,"",'请先获取番茄看看数据!😓',)
         $.done()
-      }
+      }  */
 let fqjs = 1
 //console.log(fqkkurl.match(/m.(.*?)reada/)[1])
 
@@ -265,7 +265,7 @@ console.log('番茄看看获取key回执:失败🚫 '+result.msg+' 已停止当�
         } finally {
           resolve()
         }
-      })
+//      })
     },timeout)
   })
 }
