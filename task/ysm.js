@@ -148,7 +148,7 @@ if (!ysmhdArr[0]) {
 
   }
   //await ysmtx();
-}}
+}
 
 })()
   .catch((e) => $.logErr(e))
