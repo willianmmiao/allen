@@ -67,11 +67,54 @@ let ysm2body = $.getdata('ysm2body')
 let ysmkey = ''
 
 
-!(async () => {
-  if (typeof $request !== "undefined") {
-    await ysmck()
-   
-  } else {ysmurlArr.push($.getdata('ysmurl'))
+if ($.isNode()) {
+  if (process.env.YSM_URL && process.env.YSM_URL.indexOf('\n') > -1) {
+   ysmurlArr = process.env.YSM_URL.split('\n');
+   console.log(`您选择的是用换行隔开\n`)
+  } else {
+   ysmurlArr = process.env.YSM_URL.split()
+  };
+  
+  if (process.env.YSM_HD && process.env.YSM_HD.indexOf('\n') > -1) {
+   ysmhdArr = process.env.YSM_HD.split('\n');
+   console.log(`您选择的是用换行隔开\n`)
+  } else {
+   ysmhdArr = process.env.YSM_HD.split()
+  };
+  
+  if (process.env.YSM_BD && process.env.YSM_BD.indexOf('\n') > -1) {
+   ysmbodyArr = process.env.YSM_BD.split('\n');
+   console.log(`您选择的是用换行隔开\n`)
+  } else {
+   ysmbodyArr = process.env.YSM_BD.split()
+  };
+  
+  if (process.env.YSM2_BD && process.env.YSM2_BD.indexOf('\n') > -1) {
+   ysm2bodyArr = process.env.YSM2_BD.split('\n');
+   console.log(`您选择的是用换行隔开\n`)
+  } else {
+   ysm2bodyArr = process.env.YSM2_BD.split()
+  };
+	
+ /*  Object.keys(rlurl).forEach((item) => {
+        if (rlurl[item]) {
+          rlurlArr.push(rlurl[item])
+        }
+    });
+    Object.keys(rlheader).forEach((item) => {
+        if (rlheader[item]) {
+          rlheaderArr.push(rlheader[item])
+        }
+    });  	
+    Object.keys(rlbody).forEach((item) => {
+        if (rlbody[item]) {
+          rlbodyArr.push(rlbody[item])
+        }
+    });  */
+	
+    console.log(`============ 脚本执行-国际标准时间(UTC)：${new Date().toLocaleString()}  =============\n`)
+    console.log(`============ 脚本执行-北京时间(UTC+8)：${new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toLocaleString()}  =============\n`)
+ } else {ysmurlArr.push($.getdata('ysmurl'))
     ysmhdArr.push($.getdata('ysmhd'))
     ysmbodyArr.push($.getdata('ysmbody'))
     ysm2bodyArr.push($.getdata('ysm2body'))
@@ -81,6 +124,15 @@ let ysmkey = ''
     ysmhdArr.push($.getdata(`ysmhd${i}`))
     ysmbodyArr.push($.getdata(`ysmbody${i}`))
     ysm2bodyArr.push($.getdata(`ysm2body${i}`))
+  }
+}
+
+
+
+!(async () => {
+if (!ysmhdArr[0]) {
+    $.msg($.name, '【提示】请先获取云扫码一cookie')
+    return;
   }
     console.log(`------------- 共${ysmhdArr.length}个账号-------------\n`)
       for (let i = 0; i < ysmhdArr.length; i++) {
@@ -131,7 +183,7 @@ function ysm3(timeout = 0) {
   return new Promise((resolve) => {
 let url = {
         url : "http:"+ysmurl.match(/http:(.*?)yunonline/)[1]+"yunonline/v1/add_gold",
-        headers : JSON.parse($.getdata('ysmhd')),
+        headers : JSON.parse(ysmhd),
         body : ysm2body,}
       $.post(url, async (err, resp, data) => {
         try {
@@ -158,7 +210,7 @@ function ysm2(timeout = 0) {
   return new Promise((resolve) => {
 let url = {
         url : ysmkey,
-        headers : JSON.parse($.getdata('ysmhd')),
+        headers : JSON.parse(ysmhd),
        
 }      
       $.get(url, async (err, resp, data) => {
@@ -187,19 +239,19 @@ let url = {
 //云扫码key
 function ysm1(timeout = 0) {
   return new Promise((resolve) => {
-    setTimeout( ()=>{
+/*    setTimeout( ()=>{
       if (typeof $.getdata('ysmhd') === "undefined") {
         $.msg($.name,"",'请先获取云扫码数据!😓',)
         $.done()
-      }
+      } */
 //console.log(ysmurl.match(/m.(.*?)reada/)[1])
 //console.log("http:"+ysmurl.match(/http:(.*?)yunonline/)[1]+"yunonline/v1/add_gold")
 //$.done()
 //erd14.jkfjcop.top/
 let url = {
         url : "http:"+ysmurl.match(/http:(.*?)yunonline/)[1]+"yunonline/v1/task",
-        headers : JSON.parse($.getdata('ysmhd')),
-        body : JSON.parse($.getdata('ysmbody')),
+        headers : JSON.parse(ysmhd),
+        body : JSON.parse(ysmbody),
 }
       $.post(url, async (err, resp, data) => {
         try {
@@ -219,7 +271,7 @@ console.log('云扫码获取key回执:失败🚫 '+result.msg+' 已停止当前�
         } finally {
           resolve()
         }
-      })
+ //     })
     },timeout)
   })
 }
