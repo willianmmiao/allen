@@ -59,7 +59,7 @@ hostname = .*.top
 const $ = new Env('云扫码自动阅读');
 let status;
 status = (status = ($.getval("ysmstatus") || "1") ) > 1 ? `${status}` : ""; // 账号扩展字符
-const ysmurlArr = [], ysmhdArr = [],ysmbodyArr = [],ysm2bodyArr = [],ysmcount = ''
+let ysmurlArr = [], ysmhdArr = [],ysmbodyArr = [],ysm2bodyArr = [],ysmcount = ''
 let ysmurl = $.getdata('ysmurl')
 let ysmhd = $.getdata('ysmhd')
 let ysmbody = $.getdata('ysmbody')
