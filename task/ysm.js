@@ -68,51 +68,48 @@ let ysmkey = ''
 
 
 if ($.isNode()) {
-  if (process.env.YSM_URL && process.env.YSM_URL.indexOf('\n') > -1) {
+   if (process.env.YSM_URL && process.env.YSM_URL.indexOf('#') > -1) {
+   ysmurlArr = process.env.YSM_URL.split('#');
+   console.log(`您选择的是用"#"隔开\n`)
+  }
+  else if (process.env.YSM_URL && process.env.YSM_URL.indexOf('\n') > -1) {
    ysmurlArr = process.env.YSM_URL.split('\n');
    console.log(`您选择的是用换行隔开\n`)
   } else {
    ysmurlArr = process.env.YSM_URL.split()
   };
-  
-  if (process.env.YSM_HD && process.env.YSM_HD.indexOf('\n') > -1) {
+  if (process.env.YSM_HD && process.env.YSM_HD.indexOf('#') > -1) {
+   ysmhdArr = process.env.YSM_HD.split('#');
+   console.log(`您选择的是用"#"隔开\n`)
+  }
+  else if (process.env.YSM_HD && process.env.YSM_HD.indexOf('\n') > -1) {
    ysmhdArr = process.env.YSM_HD.split('\n');
    console.log(`您选择的是用换行隔开\n`)
   } else {
    ysmhdArr = process.env.YSM_HD.split()
   };
-  
-  if (process.env.YSM_BD && process.env.YSM_BD.indexOf('\n') > -1) {
+  if (process.env.YSM_BD && process.env.YSM_BD.indexOf('#') > -1) {
+   ysmbodyArr = process.env.YSM_BD.split('#');
+   console.log(`您选择的是用"#"隔开\n`)
+  }
+  else if (process.env.YSM_BD && process.env.YSM_BD.indexOf('\n') > -1) {
    ysmbodyArr = process.env.YSM_BD.split('\n');
    console.log(`您选择的是用换行隔开\n`)
   } else {
    ysmbodyArr = process.env.YSM_BD.split()
-  };
-  
-  if (process.env.YSM2_BD && process.env.YSM2_BD.indexOf('\n') > -1) {
+  };	
+  if (process.env.YSM2_BD && process.env.YSM2_BD.indexOf('#') > -1) {
+   ysm2bodyArr = process.env.YSM2_BD.split('#');
+   console.log(`您选择的是用"#"隔开\n`)
+  }
+  else if (process.env.YSM2_BD && process.env.YSM2_BD.indexOf('\n') > -1) {
    ysm2bodyArr = process.env.YSM2_BD.split('\n');
    console.log(`您选择的是用换行隔开\n`)
   } else {
    ysm2bodyArr = process.env.YSM2_BD.split()
-  };
+  };		
 	
-	
- /*  Object.keys(rlurl).forEach((item) => {
-        if (rlurl[item]) {
-          rlurlArr.push(rlurl[item])
-        }
-    });
-    Object.keys(rlheader).forEach((item) => {
-        if (rlheader[item]) {
-          rlheaderArr.push(rlheader[item])
-        }
-    });  	
-    Object.keys(rlbody).forEach((item) => {
-        if (rlbody[item]) {
-          rlbodyArr.push(rlbody[item])
-        }
-    });  */
-	
+
     console.log(`============ 脚本执行-国际标准时间(UTC)：${new Date().toLocaleString()}  =============\n`)
     console.log(`============ 脚本执行-北京时间(UTC+8)：${new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toLocaleString()}  =============\n`)
  } else {ysmurlArr.push($.getdata('ysmurl'))
