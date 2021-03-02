@@ -4,7 +4,7 @@ name: yuedongzu
 on:
   workflow_dispatch:
   schedule:
-     - cron: '11,41 1-15 * * *'
+     - cron: '0,51 1-15 * * *'
   watch:
     types: started
 jobs:
