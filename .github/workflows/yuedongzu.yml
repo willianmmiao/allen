@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     env:
-        YDZ_yuedongzuTOKEN: ${{ YDZ_yuedongzuTOKEN }}
+        YDZ_yuedongzuTOKEN: ${{ secrets.YDZ_yuedongzuTOKEN }}
         TZ: Asia/shanghai
     steps:
       - name: Checkout
