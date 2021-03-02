@@ -69,7 +69,8 @@ let fqkkhd = $.getdata('fqkkhd')
 let fqkey = ''
 let fqkkxh = ($.getval('fqkkxh') || '20');  // 此处修改循环次数，默认一百
 let fqtx = ($.getval('fqtx') || '100');  // 此处修改提现金额，0.1元等于10，默认为提现一元，也就是100
-
+let max = 37;
+let min = 7;
 
 if ($.isNode()) {
    if (process.env.FQKK_URL && process.env.FQKK_URL.indexOf('#') > -1) {
@@ -251,6 +252,9 @@ let url = {
         console.log('\n番茄看看获取key回执:成功🌝 开始第 '+fqjs+' 次循环💦')
         fqkey = result.data.jkey
         console.log(fqkey)
+        random = Math.floor(Math.random()*(max-min+1)+min)*1000
+        console.log(random);
+	await $.wait(random);
         await fqkk2();
         await fqread();
         await $.wait(1000);
