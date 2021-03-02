@@ -65,6 +65,8 @@ let ysmhd = $.getdata('ysmhd')
 let ysmbody = $.getdata('ysmbody')
 let ysm2body = $.getdata('ysm2body')
 let ysmkey = ''
+let max = 40;
+let min = 10;
 
 
 if ($.isNode()) {
@@ -282,6 +284,9 @@ let url = {
        console.log('\n🧼来自肥皂的提示:没有匹配到key'+result.data.msg)
 } else {
         ysmkey = result.data.link
+        random = Math.floor(Math.random()*(max-min+1)+min)*1000
+        console.log(random);
+	await $.wait(random);
         await ysm2();
         await $.wait(1000);
 }
