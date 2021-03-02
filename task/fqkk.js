@@ -214,8 +214,10 @@ let url = {
            
     //const result = JSON.parse(data)
        console.log('\n番茄看看key提交成功,即将开始领取阅读奖励') 
-       
-        await $.wait(15000);
+        random = Math.floor(Math.random()*(max-min+1)+min)*1000
+        console.log(random);
+	await $.wait(random);       
+       // await $.wait(15000);
         await fqkk3(); 
        
         }} catch (e) {
@@ -254,9 +256,6 @@ let url = {
         console.log(fqkey)
         await fqkk2();
         await fqread();
-        random = Math.floor(Math.random()*(max-min+1)+min)*1000
-        console.log(random);
-	await $.wait(random);
         await $.wait(1000);
         fqjs++
 } else {
