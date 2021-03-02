@@ -173,6 +173,12 @@ if ($request.url.indexOf("add_gold") > -1) {
     $.log(ysm2body)
 $.msg($.name,"",'云扫码'+`${status}` +'提交任务数据获取成功！')
    }
+  if ($request.url.indexOf("withdraw") > -1) {
+ const ysmtx = $request.body
+  if(ysmtx)     $.setdata(ysmtx,`ysmtx${status}`)
+    $.log(ysmtx)
+$.msg($.name,"",'云扫码'+`${status}` +'微信提现数据获取成功！')
+   }
 }
 
 
@@ -189,7 +195,13 @@ let url = {
     const result = JSON.parse(data)
         if(result.errcode == 0){
         console.log('\n云扫码领取阅读奖励回执:成功🌝 '+result.data.gold+'\n今日阅读次数: '+result.data.day_read+' 今日阅读奖励: '+result.data.day_gold+' 当前余额'+result.data.last_gold+'\n')
+        if(result.data.last_gold >= 3000){
+    console.log('\n检测到当前金额可提现，前去执行提现')         
+    console.log('\n提现已被注释')        
+//await ysmdh();
+}       await $.wait(2000);
         await ysm1();
+        
 } else {
        console.log('\n云扫码领取阅读奖励回执:失败🚫 '+result.msg)
 }
@@ -215,13 +227,13 @@ let url = {
         try {
          //console.log('\n开始重定向跳转，跳转返回结果：'+data)
         if (err) {
-          console.log(`${$.name} 请求失败，请检查网路重试`)
+          console.log(`\n${$.name} 请求失败，请检查网路重试`)
         } else {
            
     //const result = JSON.parse(data)
        console.log('\n云扫码key提交成功,即将开始领取阅读奖励') 
        
-        await $.wait(10000);
+        await $.wait(8000);
         await ysm3(); 
        
         }} catch (e) {
@@ -246,21 +258,34 @@ function ysm1(timeout = 0) {
 //console.log("http:"+ysmurl.match(/http:(.*?)yunonline/)[1]+"yunonline/v1/add_gold")
 //$.done()
 //erd14.jkfjcop.top/
+//console.log("http:"+ysmurl.match(/http:(.*?)yunonline/)[1]+"yunonline/v1/task")
+//console.log(ysmhd)
+//console.log(ysmbody)
+
+
 let url = {
         url : "http:"+ysmurl.match(/http:(.*?)yunonline/)[1]+"yunonline/v1/task",
         headers : JSON.parse(ysmhd),
-        body : ysmbody,
+        body : 'secret='+ysmbody.match(/secret=(.*?)&/)[1]+'&type=read',
 }
       $.post(url, async (err, resp, data) => {
         try {
-          
+      if(data == '{"errcode":0,"msg":"success"}'){
+       console.log('\n🧼来自肥皂的提示:当前没有任务啊,手动进云扫码看看是不是一直显示更新中,别问肥皂什么原因啦～')
+}
+          //console.log(data)
     const result = JSON.parse(data)
         if(result.errcode == 0){
+         //console.log(data)
         console.log('\n云扫码获取key回执:成功🌝 开始 循环观看💦')
+      if(result.data.link === undefined){
+       console.log('\n🧼来自肥皂的提示:没有匹配到key'+result.data.msg)
+} else {
         ysmkey = result.data.link
-        //console.log(ysmkey)
         await ysm2();
         await $.wait(1000);
+}
+        
 } else {
 console.log('云扫码获取key回执:失败🚫 '+result.msg+' 已停止当前账号运行!')
 }
@@ -269,13 +294,69 @@ console.log('云扫码获取key回执:失败🚫 '+result.msg+' 已停止当前�
         } finally {
           resolve()
         }
- //     })
+  //    })
     },timeout)
   })
 }
 
 
+//云扫码兑换
+function ysmdh(timeout = 0) {
+  return new Promise((resolve) => {
 
+let url = {
+        url : "http:"+ysmurl.match(/http:(.*?)yunonline/)[1]+"yunonline/v1/user_gold",
+        headers : JSON.parse(ysmhd),
+        body : 'openid='+ysmtx.match(/openid=(.*?)ua/)[1]+'gold=3000',
+}
+      $.post(url, async (err, resp, data) => {
+        try {
+           
+    const result = JSON.parse(data)
+        if(result.errcode == 0){
+        console.log('\n云扫码提现兑换:成功🌝 兑换金额'+result.data.money+'元，前去微信提现')
+        await $.wait(1000);
+        await ysmwx();
+} else {
+       console.log('\n云扫码提现兑换:失败🚫 '+result.msg)
+}
+   
+        } catch (e) {
+          //$.logErr(e, resp);
+        } finally {
+          resolve()
+        }
+    },timeout)
+  })
+}
+
+
+//云扫码提现
+function ysmwx(timeout = 0) {
+  return new Promise((resolve) => {
+let url = {
+        url : "http:"+ysmurl.match(/http:(.*?)yunonline/)[1]+"yunonline/v1/withdraw",
+        headers : JSON.parse(ysmhd),
+        body : ysmtx,}
+      $.post(url, async (err, resp, data) => {
+        try {
+           
+    const result = JSON.parse(data)
+        if(result.errcode == 0){
+        console.log('\n云扫码微信提现回执:成功🌝 '+result.msg)
+        await ysm1();
+} else {
+       console.log('\n云扫码微信提现回执:失败🚫 '+result.msg)
+}
+   
+        } catch (e) {
+          //$.logErr(e, resp);
+        } finally {
+          resolve()
+        }
+    },timeout)
+  })
+}
 
 
 
