@@ -183,7 +183,8 @@ let url = {
     const result = JSON.parse(data)
         if(result.code == 0){
         console.log('\n番茄看看领取阅读奖励回执:成功🌝 '+result.msg+'\n今日阅读次数: '+result.data.infoView.num+' 今日阅读奖励: '+result.data.infoView.score)
-        await fqkk1();
+        await $.wait(1000);
+	await fqkk1();
 } else {
        console.log('\n番茄看看领取阅读奖励回执:失败🚫 '+result.msg+'\n今日阅读次数: '+result.data.infoView.num+' 今日阅读奖励: '+result.data.infoView.score)
 }
@@ -214,6 +215,7 @@ let url = {
            
     //const result = JSON.parse(data)
        console.log('\n番茄看看key提交成功,即将开始领取阅读奖励') 
+	await fqread();
         random = Math.floor(Math.random()*(max-min+1)+min)*1000
         console.log(random);
 	await $.wait(random);       
@@ -255,7 +257,7 @@ let url = {
         fqkey = result.data.jkey
         console.log(fqkey)
         await fqkk2();
-        await fqread();
+        //await fqread();
         await $.wait(1000);
         fqjs++
 } else {
