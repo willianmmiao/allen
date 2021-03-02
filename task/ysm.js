@@ -65,7 +65,7 @@ let ysmhd = $.getdata('ysmhd')
 let ysmbody = $.getdata('ysmbody')
 let ysm2body = $.getdata('ysm2body')
 let ysmkey = ''
-let max = 40;
+let max = 30;
 let min = 10;
 
 
@@ -234,8 +234,10 @@ let url = {
            
     //const result = JSON.parse(data)
        console.log('\n云扫码key提交成功,即将开始领取阅读奖励') 
-       
-        await $.wait(8000);
+        random = Math.floor(Math.random()*(max-min+1)+min)*1000
+        console.log(random);
+	await $.wait(random);       
+    //    await $.wait(8000);
         await ysm3(); 
        
         }} catch (e) {
@@ -284,9 +286,6 @@ let url = {
        console.log('\n🧼来自肥皂的提示:没有匹配到key'+result.data.msg)
 } else {
         ysmkey = result.data.link
-        random = Math.floor(Math.random()*(max-min+1)+min)*1000
-        console.log(random);
-	await $.wait(random);
         await ysm2();
         await $.wait(1000);
 }
