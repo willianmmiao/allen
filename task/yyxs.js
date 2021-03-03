@@ -77,69 +77,45 @@ let yyxscjurl = $.getdata('yyxscjurl')
 let yyxscjhd = $.getdata('yyxscjhd')
 let yyxsxxurl = $.getdata('yyxsxxurl')
 
+
+if ($.isNode()) {
+
+   yyxsspurl = process.env.YYXS_SPURL
+   yyxssphd = process.env.YYXS_SPHD
+   yyxsspbody = process.env.YYXS_SPBODY
+   yyxsjsurl = process.env.YYXS_JSURL
+   yyxsjsbody = process.env.YYXS_JSBODY
+   yyxsscurl = process.env.YYXS_SCURL
+   yyxsschd = process.env.YYXS_SCHD
+   yyxscjurl = process.env.YYXS_SCJURL
+   yyxscjhd = process.env.YYXS_SCJHD
+   yyxsxxurl = process.env.YYXS_XXURL
+
+    console.log(`============ 脚本执行-国际标准时间(UTC)：${new Date().toLocaleString()}  =============\n`)
+    console.log(`============ 脚本执行-北京时间(UTC+8)：${new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toLocaleString()}  =============\n`)
+ }
+
+
 !(async () => {
-  if (typeof $request !== "undefined") {
-    await yyxsck()
-   
-  } else {
-     yyxsspurlArr.push($.getdata('yyxsspurl'))
-     yyxssphdArr.push($.getdata('yyxssphd'))
-	yyxsspbodyArr.push($.getdata('yyxsspbody'))
-	yyxsjsurlArr.push($.getdata('yyxsjsurl'))
-	yyxsjsbodyArr.push($.getdata('yyxsjsbody'))
-     yyxsschdArr.push($.getdata('yyxsschd'))
-     yyxsscurlArr.push($.getdata('yyxsscurl'))
-     yyxscjhdArr.push($.getdata('yyxscjhd'))
-     yyxscjurlArr.push($.getdata('yyxscjurl'))
-     yyxsxxurlArr.push($.getdata('yyxsxxurl'))
-    let yyxscount = ($.getval('yyxscount') || '1');
-  for (let i = 2; i <= yyxscount; i++) {
-    yyxsspurlArr.push($.getdata(`yyxsspurl${i}`))
-    yyxssphdArr.push($.getdata(`yyxssphd${i}`))
-    yyxsspbodyArr.push($.getdata(`yyxsspbody${i}`))
-    yyxsjsurlArr.push($.getdata(`yyxsjsurl${i}`))
-    yyxsjsbodyArr.push($.getdata(`yyxsjsbody${i}`))
-    yyxsscurlArr.push($.getdata(`yyxsscurl${i}`))
-    yyxsschdArr.push($.getdata(`yyxsschd${i}`))
-    yyxscjurlArr.push($.getdata(`yyxscjurl${i}`))
-    yyxscjhdArr.push($.getdata(`yyxscjhd${i}`))
-    yyxsxxurlArr.push($.getdata(`yyxsxxurl${i}`))
-  }
-    console.log(`------------- 共${yyxssphdArr.length}个账号-------------\n`)
-      for (let i = 0; i < yyxssphdArr.length; i++) {
-        if (yyxssphdArr[i]) {
-         
-          yyxsspurl = yyxsspurlArr[i];
-          yyxssphd = yyxssphdArr[i];
-		yyxsspbody = yyxsspbodyArr[i];
-		yyxsjsurl = yyxsjsurlArr[i];
-		yyxsjsbody = yyxsjsbodyArr[i];
-          yyxsscurl = yyxsscurlArr[i];
-          yyxsschd = yyxsschdArr[i];
-          yyxscjurl = yyxscjurlArr[i];
-          yyxscjhd = yyxscjhdArr[i];
-          yyxsxxurl = yyxsxxurlArr[i];
-          $.index = i + 1;
-          console.log(`\n开始【阅友小说${$.index}】`)
+ 
+    console.log(`\n开始【阅友小说任务】`)
     
     for (let sc = 1 ; sc < 200 ; sc++) {
     console.log('\n阅友小说阅读时长上传回执:成功🌝 已上传'+sc+'分钟') 
     await yyxssc();
     await $.wait(100);
     
-    }await yyxsjs();
+    }
+     await yyxsjs();
      await yyxssp();
      await yyxscj();
      await yyxsxx();
 
-      
-  }
-  
-}}
-
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done())
+
+
 //阅友小说数据获取
 function yyxsck() {
    if ($request.url.indexOf("notify") > -1 && $request.body.indexOf("siteId") > -1) {
@@ -194,7 +170,7 @@ function yyxsjs(timeout = 0) {
   return new Promise((resolve) => {
 let url = {
         url : yyxsjsurl,
-        headers : JSON.parse($.getdata('yyxssphd')),
+        headers : JSON.parse(yyxssphd),
         body : 'coins=50'
        
 }      
@@ -223,14 +199,9 @@ let url = {
 //阅友小说视频奖励
 function yyxssp(timeout = 0) {
   return new Promise((resolve) => {
-    setTimeout( ()=>{
-      if (typeof $.getdata('yyxssphd') === "undefined") {
-        $.msg($.name,"",'请先获取阅友小说数据!😓',)
-        $.done()
-      }
 let url = {
         url : yyxsspurl,
-        headers : JSON.parse($.getdata('yyxssphd')),
+        headers : JSON.parse(yyxssphd),
         body : yyxsspbody,}
       $.post(url, async (err, resp, data) => {
         try {
@@ -248,7 +219,6 @@ console.log('\n阅友小说视频奖励领取回执:失败🚫 '+result.msg)
         } finally {
           resolve()
         }
-      })
     },timeout)
   })
 }
@@ -261,7 +231,7 @@ function yyxssc(timeout = 0) {
 
 let url = {
         url : yyxsscurl,
-      headers : JSON.parse($.getdata('yyxsschd')),
+      headers : JSON.parse(yyxsschd),
         
        
 }      
@@ -289,7 +259,7 @@ function yyxscj(timeout = 0) {
 
 let url = {
         url : yyxscjurl,
-      headers : JSON.parse($.getdata('yyxscjhd')),
+      headers : JSON.parse(yyxscjhd),
         
        
 }      
@@ -319,7 +289,7 @@ function yyxsxx(timeout = 0) {
 //console.log(yyxsscurl)
 let url = {
         url : yyxsxxurl,
-      headers : JSON.parse($.getdata('yyxssphd')),
+      headers : JSON.parse(yyxssphd),
         body : '',
        
 }      
@@ -329,7 +299,7 @@ let url = {
         if (result.code == 0) {
          // console.log(data)
           console.log('\n阅友小说用户信息回执:成功🌝 \n\n------------- 当前账号信息 -------------\n用户id:'+result.data.uc.User.id+'\n金币数:'+result.data.uc.User.acctInfo.coins+'个，约等于:'+result.data.uc.User.acctInfo.coins / 10000+'元\n'+result.data.uc.dailyMsg+'\n'+result.data.uc.totalMsg)
-           
+   
            
         } else {
        
