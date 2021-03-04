@@ -67,16 +67,35 @@ hostname = ddstar.palmmob.com
 const $ = new Env('嘀嗒星球');
 let status;
 status = (status = ($.getval("ddxqstatus") || "1") ) > 1 ? `${status}` : ""; // 账号扩展字符
-const ddxqurlArr = [], ddxqhdArr = [],ddxqggurlArr = [],ddxqcount = ''
+let ddxqurlArr = [], ddxqhdArr = [],ddxqggurlArr = [],ddxqcount = ''
 let ddxqurl = $.getdata('ddxqurl')
 let ddxqhd = $.getdata('ddxqhd')
 let ddxqggurl = $.getdata('ddxqggurl')
 let ddxqhb = 0
-!(async () => {
-  if (typeof $request !== "undefined") {
-    await ddxqck()
-   
-  } else {ddxqurlArr.push($.getdata('ddxqurl'))
+
+if ($.isNode()) {
+   if (process.env.DDXQ_URL && process.env.DDXQ_URL.indexOf('\n') > -1) {
+   ddxqurlArr = process.env.DDXQ_URL.split('\n');
+   console.log(`您选择的是用换行隔开\n`)
+  } else {
+   ddxqurlArr = process.env.DDXQ_URL.split()
+  };
+  if (process.env.DDXQ_HD && process.env.DDXQ_HD.indexOf('\n') > -1) {
+   ddxqhdArr = process.env.DDXQ_HD.split('\n');
+   console.log(`您选择的是用换行隔开\n`)
+  } else {
+   ddxqhdArr = process.env.DDXQ_HD.split()
+  };
+  if (process.env.DDXQ_GGURL && process.env.DDXQ_GGURL.indexOf('\n') > -1) {
+   ddxqggurlArr = process.env.DDXQ_GGURL.split('\n');
+   console.log(`您选择的是用换行隔开\n`)
+  } else {
+   ddxqggurlArr = process.env.DDXQ_GGURL.split()
+  };
+  
+    console.log(`============ 脚本执行-国际标准时间(UTC)：${new Date().toLocaleString()}  =============\n`)
+    console.log(`============ 脚本执行-北京时间(UTC+8)：${new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toLocaleString()}  =============\n`)
+ } else {ddxqurlArr.push($.getdata('ddxqurl'))
     ddxqhdArr.push($.getdata('ddxqhd'))
    ddxqggurlArr.push($.getdata('ddxqggurl'))
     let ddxqcount = ($.getval('ddxqcount') || '1');
@@ -85,6 +104,13 @@ let ddxqhb = 0
     ddxqhdArr.push($.getdata(`ddxqhd${i}`))
     ddxqggurlArr.push($.getdata(`ddxqggurl${i}`))
   }
+}
+
+
+
+
+!(async () => {
+
     console.log(`------------- 共${ddxqhdArr.length}个账号-------------\n`)
       for (let i = 0; i < ddxqhdArr.length; i++) {
         if (ddxqhdArr[i]) {
@@ -97,7 +123,7 @@ let ddxqhb = 0
           await ddxqlb();
 
   }
-}}
+}
 
 })()
   .catch((e) => $.logErr(e))
@@ -163,12 +189,6 @@ console.log('\n嘀嗒星球[红包任务]已运行完毕\n本次运行共获得�
 //嘀嗒星球宝箱
 function ddxqlb(timeout = 0) {
   return new Promise((resolve) => {
-    setTimeout( ()=>{
-      if (typeof $.getdata('ddxqhd') === "undefined") {
-        $.msg($.name,"",'请先获取嘀嗒星球数据!😓',)
-        $.done()
-      }
-
 let url = {
         url : ddxqurl,
         headers : JSON.parse(ddxqhd),
@@ -195,7 +215,6 @@ console.log('嘀嗒星球[宝箱红包]回执:失败🚫 \n当前账号已经没
         } finally {
           resolve()
         }
-      })
     },timeout)
   })
 }
