@@ -4,7 +4,7 @@ name: ddxq
 on:
   workflow_dispatch:
   schedule:
-     - cron: '3 1-13 * * *'
+     - cron: '13 1-13 * * *'
   watch:
     types: started
 jobs:
