@@ -158,7 +158,7 @@ function hldspqd(timeout = 0) {
 
 hlsign = hldspurl.match(/sign=(\w+)/)[1]
 hluid = hldspurl.match(/uid=(\w.+)/)[1]
-
+  return new Promise((resolve) => {	
 let url = {
         url : 'https://vip.75787.com/app/index.php?i=3&t=0&v=1.1.47&from=wxapp&c=entry&a=wxapp&do=Doqiandao&m=luobo_video&sign='+hlsign+'&uid='+hluid,
         headers : JSON.parse(hldsphd),
