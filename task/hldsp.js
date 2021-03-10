@@ -122,6 +122,8 @@ $.log(hldsphd)
 
 //哈喽短视频红包
 function hldspsp(timeout = 0) {
+hlsign = hldspurl.match(/sign=(\w+)/)[1]
+hluid = hldspurl.match(/uid=(\w.+)/)[1]
   return new Promise((resolve) => {
 let url = {
         url : 'https://vip.75787.com/app/index.php?i=3&t=0&v=1.1.47&from=wxapp&c=entry&a=wxapp&do=dorenwu&m=luobo_video&sign='+hlsign+'&uid='+hluid,
@@ -173,7 +175,7 @@ let url = {
         console.log('\n哈喽短视频[签到]回执:成功🌝  \n获得金币:'+result.data.price)
      //$.done()
        await $.wait(2000);
-        await hldsprw();
+        await hldspsp();
         
 } else {
 console.log('哈喽短视频[签到]回执:失败🚫 '+result.message)
