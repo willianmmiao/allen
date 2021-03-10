@@ -99,7 +99,7 @@ if (!hldsphdArr[0]) {
             await hldspqd();
             
   }
-}}
+}
 
 })()
   .catch((e) => $.logErr(e))
